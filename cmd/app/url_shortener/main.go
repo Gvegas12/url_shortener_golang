@@ -8,6 +8,8 @@ import (
 	"github.com/Gvegas12/url_shortener_golang/internal/config"
 	cslog "github.com/Gvegas12/url_shortener_golang/internal/lib/logger/slog"
 	"github.com/Gvegas12/url_shortener_golang/internal/storage/sqlite"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/joho/godotenv"
 )
 
@@ -38,26 +40,17 @@ func main() {
 		os.Exit(1)
 	}
 
-	id, err := storage.SaveURL("https://google.com", "google")
-	if err != nil {
-		log.Error("failed to save url", cslog.Err(err))
-		os.Exit(1)
-	}
-
-	log.Info("saved url", slog.Int64("id", id))
-
-	id, err = storage.SaveURL("https://google.com", "google")
-	if err != nil {
-		log.Error("failed to save url", cslog.Err(err))
-		os.Exit(1)
-	}
-
+	// TODO
 	_ = storage
 
-	// 1. init config: cleanenv
-	// 2. init logger: slog
-	// 3. init storage: sqlite
-	// 4. init router: chi, "chi render"
+	router := chi.NewRouter()
+	router.Use(middleware.RequestID)
+	router.Use(middleware.Logger)
+
+	// 1. init config: cleanenv \/
+	// 2. init logger: slog \/
+	// 3. init storage: sqlite \/
+	// 4. init router: chi, "chi render" \
 	// 5. run server
 }
 
